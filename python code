@@ -1,0 +1,36 @@
+import hashlib
+
+class URLShortener:
+    def __init__(self):
+        self.url_mapping = {}
+    
+    def shorten_url(self, long_url):
+        # Generate a unique short key using MD5 hash
+        md5_hash = hashlib.md5(long_url.encode()).hexdigest()
+        short_url_key = md5_hash[:6]  # Take the first 6 characters as the short key
+        
+        # Store the mapping between short and long URLs
+        self.url_mapping[short_url_key] = long_url
+        
+        # Return the shortened URL
+        return f'http://your-short-domain.com/{short_url_key}'
+
+    def expand_url(self, short_url_key):
+        # Retrieve the long URL from the mapping
+        long_url = self.url_mapping.get(short_url_key)
+        if long_url:
+            return long_url
+        else:
+            return "URL not found."
+
+# Usage
+shortener = URLShortener()
+
+while True:
+    long_url = input("Enter the long URL (or 'q' to quit): ")
+    if long_url.lower() == 'q':
+        break
+    
+    short_url = shortener.shorten_url(long_url)
+    print(f"Shortened URL: {short_url}")
+
